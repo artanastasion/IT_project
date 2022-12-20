@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace domain.Models;
+namespace domain.Data.Models;
 
 public class Schedule
 {
