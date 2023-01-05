@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace domain.Data.Models
 {
-    [Table(nameof(Users))]
     public class Users
     {
         [Key] public int Id { get; set; }

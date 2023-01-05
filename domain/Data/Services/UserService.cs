@@ -21,4 +21,30 @@ public class UserService
 
         return user is null ? Result.Fail<Users>("Пользователь не найден") : Result.Ok(user);
     }
-}
+    
+
+    
+    public Result<Users> CheckUser(Users user)
+    {
+        if (string.IsNullOrEmpty(user.Login))
+            return Result.Fail<Users>("Укажите логин");
+
+        var userCheck = _repository.CheckUser(user);
+        return userCheck is null ? Result.Fail<Users>("Нет") : Result.Fail<Users>("да");
+
+    }
+    
+    public Result<Users> Create(Users user)
+    {
+        if (string.IsNullOrEmpty(user.Login))
+            return Result.Fail<Users>("Укажите логин");
+        
+        if (CheckUser(user) == Result.Fail<Users>("да"))
+            return Result.Fail<Users>("Пользователь с таким лоогином уже существует");
+            
+        var userCreate = _repository.Create(user);
+        return userCreate is null ? Result.Fail<Users>("Пользователь не может быть создан") : Result.Ok(userCreate);
+            
+    }
+    
+} 

@@ -6,9 +6,9 @@ public interface IUserRepository
 {
     IEnumerable<Users> GetUserList();
     Users GetByLogin(string login);
-    Users GetUser(int id);
-    void Create(Users item);
-    void Update(Users item);
-    void Delete(int id);    
-    void Save();
+    Users CheckUser(Users item);
+    Users Create(Users item);
+    Users Update(Users item);
+    Users Delete(int id);
+    Users Save();
 }
