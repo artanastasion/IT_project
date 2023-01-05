@@ -45,6 +45,6 @@ public class UserTests
         var res = _userService.Create(user);
         
         Assert.True(res.IsFailure); 
-        Assert.Equal("Логин не был указан", res.Error); 
+        Assert.Equal("Укажите логин", res.Error); 
     }
 }
