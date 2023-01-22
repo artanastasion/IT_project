@@ -6,8 +6,7 @@ public interface IDoctorRepository
 {
     IEnumerable<Doctor> GetDoctorList();
     Doctor GetNameDoctor(string name);
-
-    Doctor GetSpecialisationDoctor(Specialization item);
+    IEnumerable<Doctor> GetSpecialisationDoctor(Specialization item);
     Doctor GetDoctorId(int id);
     Doctor Create(Doctor item);
     Doctor Delete(int id);    
