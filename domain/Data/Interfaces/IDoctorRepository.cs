@@ -2,16 +2,11 @@
 
 namespace domain.Data.Interfaces;
 
-public interface IDoctorRepository
+public interface IDoctorRepository : IRepository<Doctor>
 {
     IEnumerable<Doctor> GetDoctorList();
     Doctor GetNameDoctor(string name);
-
-    Doctor GetSpecialisationDoctor(Specialization item);
+    IEnumerable<Doctor> GetSpecialisationDoctor(Specialization item);
     Doctor GetDoctorId(int id);
-    Doctor Create(Doctor item);
-    Doctor Delete(int id);    
-    Doctor Save();
-    Doctor Update(Doctor item);
 
 }

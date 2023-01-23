@@ -1,12 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace domain.Data.Models;
+﻿namespace domain.Data.Models;
 
 public class Doctor
 {
-    [Key] public int Id { get; set; }
+    public int Id { get; set; }
 
-    [MaxLength(255)] public string Name { get; set; }
+    public string Name { get; set; }
 
-    public virtual Specialization Specialization { get; set; }
+    public int Specialization { get; set; }
+    
+    public Doctor(int id, string name, int specializationId)
+    {
+        Id = id;
+        Name = name;
+        Specialization = specializationId;
+    }
+
+    public Doctor() : this(0, "default", 0) { }
+    public Result IsValid()
+    {
+        if (Id < 0)
+            return Result.Fail("Incorrect id");
+        if (string.IsNullOrEmpty(Name))
+            return Result.Fail("Incorrect doctor name");
+        if (Specialization < 0)
+            return Result.Fail("Incorrect specialization id");
+        return Result.Ok();
+    }
 }

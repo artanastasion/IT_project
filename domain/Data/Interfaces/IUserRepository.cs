@@ -2,13 +2,8 @@
 
 namespace domain.Data.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<Users>
 {
-    IEnumerable<Users> GetUserList();
-    Users GetByLogin(string login);
+    Users? GetUserByLogin(string login);
     Users CheckUser(Users item);
-    Users Create(Users item);
-    Users Update(Users item);
-    Users Delete(int id);
-    Users Save();
 }

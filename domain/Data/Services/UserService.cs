@@ -17,7 +17,7 @@ public class UserService
         if (string.IsNullOrEmpty(login))
             return Result.Fail<Users>("Логин не был указан");
 
-        var user = _repository.GetByLogin(login);
+        var user = _repository.GetUserByLogin(login);
 
         return user is null ? Result.Fail<Users>("Пользователь не найден") : Result.Ok(user);
     }
@@ -46,5 +46,16 @@ public class UserService
         return userCreate is null ? Result.Fail<Users>("Пользователь не может быть создан") : Result.Ok(userCreate);
             
     }
-    
+    public Result<Users> Update(Users user)
+    {
+        if (string.IsNullOrEmpty(user.Login))
+            return Result.Fail<Users>("Укажите логин");
+        
+        if (CheckUser(user) == Result.Fail<Users>("да"))
+            return Result.Fail<Users>("Пользователь с таким лоогином уже существует");
+            
+        var userCreate = _repository.Create(user);
+        return userCreate is null ? Result.Fail<Users>("Пользователь не может быть изменен") : Result.Ok(userCreate);
+            
+    }
 } 
