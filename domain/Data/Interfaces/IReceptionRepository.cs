@@ -2,7 +2,7 @@
 
 namespace domain.Data.Interfaces;
 
-public interface IReceptionRepository
+public interface IReceptionRepository : IRepository<Reception>
 {
     IEnumerable<Reception> GetReceptionList();
     

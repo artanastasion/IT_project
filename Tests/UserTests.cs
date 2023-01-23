@@ -28,7 +28,7 @@ public class UserTests
     [Fact]
     public void UserNotFound_ShouldFail()
     {
-        _userRepositoryMock.Setup(repository => repository.GetByLogin(It.IsAny<string>()))
+        _userRepositoryMock.Setup(repository => repository.GetUserByLogin(It.IsAny<string>()))
             .Returns(() => null); 
         
         var res = _userService.GetUserByLogin("qwertyuiop"); 

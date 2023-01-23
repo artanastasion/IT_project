@@ -12,6 +12,9 @@ public class Reception
     public DateTime EndReception { get; set; }
 
     public virtual Doctor Doctor { get; set; }
+    public int DoctorId { get; set; }
+    public int UserId { get; set; }
+
 
     public virtual Users User { get; set; }
 
