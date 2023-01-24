@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IT_Project.Controllers
 {
-    [Route("api/specialization")]
+    [Route("api/specializations")]
     [ApiController]
     public class SpecializationController : ControllerBase
     {

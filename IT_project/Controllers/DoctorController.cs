@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace IT_Project.Controllers
 {
     [ApiController]
-    [Route("api/doctor")]
+    [Route("api/doctors")]
     public class DoctorController : Controller
     {
         private readonly DoctorInteractor _doctors;
@@ -69,7 +69,7 @@ namespace IT_Project.Controllers
                 SpecializationId = res.Value.SpecializationId
             });
         }
-        [HttpGet("getBySpec")]
+        [HttpGet("getBySpecialization")]
         public IActionResult GetBySpec(int specialization_id)
         {
             Specialization spec = new Specialization(specialization_id, "tmp");

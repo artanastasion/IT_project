@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IT_Project.Controllers
 {
-    [Route("api/schedule")]
+    [Route("api/schedules")]
     [ApiController]
     public class ScheduleController : ControllerBase
     {

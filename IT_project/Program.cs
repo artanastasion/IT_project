@@ -1,16 +1,16 @@
-using domain.Data.Models;
-using domain.Data.Interfaces;
-using domain.Data.Services;
-using domain;
 using dbase;
 using dbase.Repository;
+using domain.Data.Services;
+using domain.Data.Interfaces;
+using IT_Project.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DATABASE_URL")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.EnableSensitiveDataLogging(true));
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -26,12 +26,27 @@ builder.Services.AddTransient<ReceptionInteractor>();
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidAudience = AuthOptions.AUDIENCE,
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey()
+                    };
+                });
+
 
 
 var app = builder.Build();
 
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -40,7 +55,21 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
+app.UseAuthorization();
+
 app.MapRazorPages();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
 app.MapControllers();
 

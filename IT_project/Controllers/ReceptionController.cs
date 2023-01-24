@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IT_Project.Controllers
 {
     [ApiController]
-    [Route("api/reception")]
+    [Route("api/receptions")]
     public class ReceptionController : Controller
     {
         private readonly ReceptionInteractor _receptions;

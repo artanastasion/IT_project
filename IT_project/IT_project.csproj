@@ -14,4 +14,8 @@
       <ProjectReference Include="..\domain\domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="IT_Project.csproj.user" />
+    </ItemGroup>
+
 </Project>

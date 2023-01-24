@@ -12,4 +12,5 @@ namespace IT_Project.Views
         [JsonPropertyName("fullname")]
         public string Fullname { get; set; } = string.Empty;
     }
+    
 }

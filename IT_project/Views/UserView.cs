@@ -19,4 +19,5 @@ namespace IT_Project.Views
         [JsonPropertyName("token")]
         public string Token { get; set; } = string.Empty;
     }
+    
 }
