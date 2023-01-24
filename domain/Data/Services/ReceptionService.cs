@@ -7,6 +7,7 @@ namespace domain.Data.Services;
 public class ReceptionService
 {
     private readonly IReceptionRepository _repository;
+    private static readonly Dictionary<int, Mutex> _mutexDictionary = new Dictionary<int, Mutex>();
 
     public ReceptionService(IReceptionRepository repository)
     {
@@ -46,10 +47,28 @@ public class ReceptionService
         
         if (check.Contains(reception) || schedule.StartDay < reception.StartReception || schedule.EndDay > reception.StartReception)
             return Result.Fail<Reception>("Appointment time not available");
+        
+        var appointments = _repository.GetReception(reception.DoctorId).ToList();
+        appointments.Sort((a, b) => { return (a.StartReception < b.StartReception) ? -1 : 1; });
+        var index = appointments.FindLastIndex(a => a.EndReception <= reception.StartReception);
+        if (appointments.Count > index + 1)
+        {
+            if (appointments[index + 1].StartReception < reception.EndReception)
+                return Result.Fail<Reception>("Appointment time already taken");
+        }
 
-        var result = _repository.SaveRecord(reception, schedule);
-        return result is null ? Result.Fail<Reception>("Appointment time not available") : Result.Ok(result);
-           
+        if (!_mutexDictionary.ContainsKey(reception.DoctorId))
+            _mutexDictionary.Add(reception.DoctorId, new Mutex());
+        _mutexDictionary.First(d => d.Key == reception.DoctorId).Value.WaitOne();
+        
+        if (_repository.Create(reception).IsValid().Success)
+        {
+            _repository.Save();
+            _mutexDictionary.First(d => d.Key == reception.DoctorId).Value.ReleaseMutex();
+            return Result.Ok(reception);
+        }
+        return Result.Fail<Reception>("Unable to save appointment");
+        
     }
     
     public Result<IEnumerable<Reception>> GetFreeDates(Specialization specialization)
